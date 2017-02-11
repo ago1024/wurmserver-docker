@@ -9,8 +9,8 @@
 ##
 
 function die() {
-	echo "$*"
-	exit -1
+  echo "$*"
+  exit -1
 }
 
 # Check WURMROOT
@@ -31,19 +31,31 @@ LOGGINGDIR="$DATADIR/logs/$SERVERNAME"
 
 # Overlay config files
 find /data/config -maxdepth 1 -type f | while read configfile; do
-	ln -sfv $configfile $WURMROOT/
+  ln -sfv $configfile $WURMROOT/
 done
 
+# Set wurm.ini option
+function setoption() {
+  option="$1"
+  value="$2"
+
+  sed -n -i -e "/^$option=/!p" -e "\$a$option=$value" "$WURMROOT/$SERVERNAME/wurm.ini"
+}
 
 # Link server directory
 if test -d "$SERVERDIR"; then
-	ln -sfv "$SERVERDIR" $WURMROOT/
-	mkdir -p "$LOGGINGDIR"
-	ln -sfv "$LOGGINGDIR" $WURMROOT/logging
+  ln -sfv "$SERVERDIR" $WURMROOT/
+  ln -sfv "$SERVERDIR" $WURMROOT/currentserver
+
+  # Enable RMI
+  setoption USE_INCOMING_RMI true
+
+  mkdir -p "$LOGGINGDIR"
+  ln -sfv "$LOGGINGDIR" $WURMROOT/logging
 else
-	die "Server directory '$SERVERDIR' is missing"
+  die "Server directory '$SERVERDIR' is missing"
 fi
 
 # Start server
 cd $WURMROOT
-$WURMROOT/WurmServerLauncher "Start=$SERVERNAME" "$*"
+$WURMROOT/WurmServerLauncher "Start=$SERVERNAME" "$@"

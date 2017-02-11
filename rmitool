@@ -1,0 +1,7 @@
+#!/bin/bash
+
+function get-password() {
+  sqlite3 $WURMROOT/currentserver/sqlite/wurmlogin.db "select intraserverpassword from servers where local=1"
+}
+
+java -jar $WURMROOT/rmitool.jar localhost 7220 "$(get-password)" "$@"

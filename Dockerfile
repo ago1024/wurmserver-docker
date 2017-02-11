@@ -6,9 +6,10 @@ ENV WURMROOT=/wurmunlimited DATADIR=/data
 # Load packages
 #
 RUN apt-get -y update && apt-get install -y \
-	curl \
-	lib32gcc1 \
-	unzip \
+  curl \
+  lib32gcc1 \
+  sqlite3 \
+  unzip \
 && rm -rf /var/lib/apt/lists/*
 
 #
@@ -34,6 +35,7 @@ RUN chmod a+x ./patcher.sh && ./patcher.sh
 # Setup RMI Tool
 #
 RUN curl -L -O https://github.com/bdew-wurm/rmitool/releases/download/v1.0/rmitool.jar
+COPY rmitool $WURMROOT/rmitool
 
 #
 # Adjust server settings
@@ -46,13 +48,16 @@ COPY launcher.sh $WURMROOT/
 # Initialize data volume
 #
 COPY LaunchConfig.ini logging.properties $DATADIR/config/
-RUN chmod a+x launcher.sh
 RUN mkdir -p $DATADIR/servers && \
-	for server in Creative Adventure; do \
-		cp -r ${server}_backup $DATADIR/servers/$server && \
-		rm $DATADIR/servers/$server/originaldir; \
-	done
+  for server in Creative Adventure; do \
+    cp -r ${server}_backup $DATADIR/servers/$server && \
+    rm $DATADIR/servers/$server/originaldir; \
+  done
 
+ENV PATH=$PATH:$WURMROOT:$WURMROOT/runtime/jre1.8.0_60/bin
+
+HEALTHCHECK --interval=5m --timeout=10s \
+  CMD rmitool isrunning || exit 1
 EXPOSE 3724 48010 7221 7220 27016
 VOLUME $DATADIR
 ENTRYPOINT ["./launcher.sh"]
