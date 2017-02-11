@@ -31,6 +31,11 @@ RUN curl -L https://github.com/ago1024/WurmServerModLauncher/releases/download/v
 RUN chmod a+x ./patcher.sh && ./patcher.sh
 
 #
+# Setup RMI Tool
+#
+RUN curl -L -O https://github.com/bdew-wurm/rmitool/releases/download/v1.0/rmitool.jar
+
+#
 # Adjust server settings
 #
 RUN cp linux64/steamclient.so ./nativelibs
@@ -44,7 +49,8 @@ COPY LaunchConfig.ini logging.properties $DATADIR/config/
 RUN chmod a+x launcher.sh
 RUN mkdir -p $DATADIR/servers && \
 	for server in Creative Adventure; do \
-		mv ${server}_backup $DATADIR/servers/$server; \
+		cp -r ${server}_backup $DATADIR/servers/$server && \
+		rm $DATADIR/servers/$server/originaldir; \
 	done
 
 EXPOSE 3724 48010 7221 7220 27016
