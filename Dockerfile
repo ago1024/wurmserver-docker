@@ -44,7 +44,7 @@ COPY LaunchConfig.ini logging.properties $DATADIR/config/
 RUN chmod a+x launcher.sh
 RUN mkdir -p $DATADIR/servers && \
 	for server in Creative Adventure; do \
-		cp -rp ${server}_backup $DATADIR/servers/$server; \
+		mv ${server}_backup $DATADIR/servers/$server; \
 	done
 
 EXPOSE 3724 48010 7221 7220 27016
