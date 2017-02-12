@@ -8,6 +8,8 @@
 ## Link logging folder from $DATADIR/logs/$SERVERNAME into $WURMROOT/logging
 ##
 
+set -e
+
 function die() {
   echo "$*"
   exit -1
@@ -56,6 +58,40 @@ else
   die "Server directory '$SERVERDIR' is missing"
 fi
 
+# Setup server for cluster
+if test -f servers.yml; then
+  java -jar clusterconfig.jar servers.yml --verify $SERVERNAME || die "servers.yml is not valid"
+  java -jar clusterconfig.jar servers.yml --ini $SERVERNAME | while read option value; do
+    setoption "$option" "$value"
+  done || die "failed to set server options"
+
+  java -jar clusterconfig.jar servers.yml --sql $SERVERNAME | \
+    sqlite3 $WURMROOT/currentserver/sqlite/wurmlogin.db || die "Failed to server server ports"
+fi
+
+
+# Set local IP and ports
+ip=$(hostname -i)
+echo "UPDATE SERVERS SET INTRASERVERADDRESS='127.0.0.1', INTRASERVERPORT='48010', EXTERNALIP='$ip', EXTERNALPORT='3724', RMIPORT='7220', REGISTRATIONPORT='7221' WHERE LOCAL=1;" | \
+  sqlite3 $WURMROOT/currentserver/sqlite/wurmlogin.db || die "Failed to set local server ip"
+
+function term_handler() {
+  echo "term_handler $pid"
+  if test "$pid" -ne 0; then
+    echo "rmitool shutdown"
+    $WURMROOT/rmitool shutdown docker 10 "Server shutdown" || kill -TERM "$pid"
+    wait "$pid"
+  fi
+  exit 143
+}
+trap 'kill ${!}; term_handler' SIGTERM SIGINT
+
 # Start server
 cd $WURMROOT
-$WURMROOT/WurmServerLauncher "Start=$SERVERNAME" "$@"
+$WURMROOT/WurmServerLauncher "Start=$SERVERNAME" "$@" &
+pid="${!}"
+
+while true
+do
+  tail -f /dev/null & wait ${!}
+done

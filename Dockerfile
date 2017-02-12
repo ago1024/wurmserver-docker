@@ -38,6 +38,11 @@ RUN curl -L -O https://github.com/bdew-wurm/rmitool/releases/download/v1.0/rmito
 COPY rmitool $WURMROOT/rmitool
 
 #
+# Setup clusterconfig
+#
+RUN curl -L -O https://github.com/ago1024/clusterconfig/releases/download/v1.2/clusterconfig.jar
+
+#
 # Adjust server settings
 #
 RUN cp linux64/steamclient.so ./nativelibs
@@ -60,4 +65,5 @@ HEALTHCHECK --interval=5m --timeout=10s \
   CMD rmitool isrunning || exit 1
 EXPOSE 3724 48010 7221 7220 27016
 VOLUME $DATADIR
+STOPSIGNAL SIGTERM
 ENTRYPOINT ["./launcher.sh"]
