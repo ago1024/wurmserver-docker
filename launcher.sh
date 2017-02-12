@@ -72,7 +72,7 @@ fi
 
 # Set local IP and ports
 ip=$(hostname -i)
-echo "UPDATE SERVERS SET INTRASERVERADDRESS='127.0.0.1', INTRASERVERPORT='48010', EXTERNALIP='$ip', EXTERNALPORT='3724', RMIPORT='7220', REGISTRATIONPORT='7221' WHERE LOCAL=1;" | \
+echo "UPDATE SERVERS SET INTRASERVERADDRESS='$ip', INTRASERVERPORT='48010', EXTERNALIP='$ip', EXTERNALPORT='3724', RMIPORT='7220', REGISTRATIONPORT='7221' WHERE LOCAL=1;" | \
   sqlite3 $WURMROOT/currentserver/sqlite/wurmlogin.db || die "Failed to set local server ip"
 
 function term_handler() {

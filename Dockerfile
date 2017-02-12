@@ -40,7 +40,7 @@ COPY rmitool $WURMROOT/rmitool
 #
 # Setup clusterconfig
 #
-RUN curl -L -O https://github.com/ago1024/clusterconfig/releases/download/v1.2/clusterconfig.jar
+RUN curl -L -O https://github.com/ago1024/clusterconfig/releases/download/v1.4/clusterconfig.jar
 
 #
 # Adjust server settings
