@@ -1,0 +1,25 @@
+version: '2'
+services:
+  login:
+    image: wurmunlimited
+    ports:
+      - "3724:3724"
+    volumes:
+      - wurmunlimited:/data
+    command: Login
+  creative:
+    image: wurmunlimited
+    ports:
+      - "3725:3724"
+    volumes:
+      - wurmunlimited:/data
+    command: Creative
+  adventure:
+    image: wurmunlimited
+    ports:
+      - "3726:3724"
+    volumes:
+      - wurmunlimited:/data
+    command: Adventure
+volumes:
+  wurmunlimited:      

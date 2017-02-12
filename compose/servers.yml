@@ -1,0 +1,35 @@
+servers:
+  Login:
+    type: login
+    id: 1
+    public:
+      ip: 192.168.26.245
+      port: 3724
+    internal:
+      ip: login
+      password: foobar
+    directions:
+      north: Creative
+    rmi: true
+  Creative:
+    type: slave
+    id: 2
+    public:
+      ip: 192.168.26.245
+      port: 3725
+    internal:
+      ip: creative
+      password: foobar
+    directions:
+      south: Login
+    rmi: true
+  Adventure:
+    type: standalone
+    id: 11455
+    public:
+      ip: 192.168.26.245
+      port: 3726
+    internal:
+      ip: adventure
+      password: foobar
+    rmi: true
