@@ -24,13 +24,17 @@ test -d "$WURMROOT" || die "WURMROOT ($WURMROOT) is not a directory"
 test -z "$DATADIR" && die "DATADIR environment variable is not set"
 test -d "$DATADIR" || die "DATADIR ($DATADIR) is not a directory"
 
+# Check SERVERSDIR
+test -z "$SERVERSDIR" && die "SERVERSDIR environment variable is not set"
+test -d "$SERVERSDIR" || die "SERVERSDIR ($SERVERSDIR) is not a directory"
+
 # Check SERVERNAME
 SERVERNAME="$1"
 test -z "$SERVERNAME" && die "Usage: laucher.sh servername [additional WurmServerLauncher options]"
 shift
 
-SERVERDIR="$DATADIR/servers/$SERVERNAME"
-LOGGINGDIR="$DATADIR/logs/$SERVERNAME"
+SERVERDIR="$SERVERSDIR/$SERVERNAME"
+LOGGINGDIR="$SERVERSDIR/$SERVERNAME/Logs"
 
 # Overlay config files
 find /data/config -mindepth 1 -maxdepth 1 -type f | while read configfile; do

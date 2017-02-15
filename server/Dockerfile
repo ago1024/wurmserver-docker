@@ -1,8 +1,8 @@
-FROM ubuntu:latest
+FROM ago1024/steamcmd
 
-ENV WURMROOT=/wurmunlimited DATADIR=/data
-ARG betabranch
-ARG betapassword
+ENV WURMROOT=/wurmunlimited DATADIR=/data SERVERSDIR=/servers
+ARG betabranch=
+ARG betapassword=
 ARG MODLOADER_VERSION=0.21.1
 ARG CLUSTERCONFIG_VERSION=1.4
 ARG RMITOOL_VERSION=1.0
@@ -13,8 +13,6 @@ ARG RMITOOL_VERSION=1.0
 RUN \
   apt-get -y update && \
   apt-get install -y \
-    curl \
-    lib32gcc1 \
     sqlite3 \
     unzip \
     && \
@@ -24,20 +22,13 @@ RUN \
 # Download and setup steamcmd, Download WU Server
 #
 RUN \
-  mkdir /root/steamcmd && \
-  curl https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz | tar xvz -C /root/steamcmd && \
-  /root/steamcmd/steamcmd.sh \
+  /opt/steamcmd/steamcmd.sh \
     +login anonymous \
     +force_install_dir $WURMROOT \
     +app_update 402370 ${betabranch:+-beta} ${betabranch} ${betapassword:+-betapassword} ${betapassword} validate \
     +exit && \
   cp $WURMROOT/linux64/steamclient.so $WURMROOT/nativelibs && \
-  rm -rf /root/steamcmd && \
-  mkdir -p $DATADIR/servers && \
-  for server in Creative Adventure; do \
-    cp -rv $WURMROOT/${server}_backup $DATADIR/servers/$server && \
-    rm -rv $DATADIR/servers/$server/originaldir; \
-  done && \
+  mkdir -p $SERVERSDIR && \
   rm -rf $WURMROOT/*_backup
 
 #
@@ -79,6 +70,5 @@ ENV PATH=$PATH:$WURMROOT:$WURMROOT/runtime/jre1.8.0_60/bin
 HEALTHCHECK --interval=5m --timeout=10s \
   CMD $WURMROOT/rmitool isrunning || exit 1
 EXPOSE 3724 48010 7221 7220 27016
-VOLUME $DATADIR
 STOPSIGNAL SIGTERM
 ENTRYPOINT ["./launcher.sh"]
