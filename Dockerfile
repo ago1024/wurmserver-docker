@@ -28,8 +28,8 @@ RUN /root/steamcmd/steamcmd.sh +login anonymous +force_install_dir $WURMROOT +ap
 # Setup modloader
 #
 WORKDIR $WURMROOT
-RUN curl -L https://github.com/ago1024/WurmServerModLauncher/releases/download/v0.21.1/server-modlauncher-0.21.1.zip >/root/server-modlauncher.zip && unzip /root/server-modlauncher.zip && rm -rf /root/server-modlauncher.zip
-RUN chmod a+x ./patcher.sh && ./patcher.sh
+RUN curl -L https://github.com/ago1024/WurmServerModLauncher/releases/download/v0.21.1/server-modlauncher-0.21.1.zip >/root/server-modlauncher.zip && unzip /root/server-modlauncher.zip && rm -rf /root/server-modlauncher.zip && rm -rf $WURMROOT/mods/*
+RUN chmod a+x $WURMROOT/patcher.sh && $WURMROOT/patcher.sh && mv -v $WURMROOT/WurmServerLauncher-patched $WURMROOT/WurmServerLauncher
 
 #
 # Setup RMI Tool
