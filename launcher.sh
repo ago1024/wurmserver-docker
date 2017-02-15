@@ -4,6 +4,7 @@
 ## WurmUnlimited docker server launcher script
 ##
 ## Link files from $DATADIR/config into $WURMROOT
+## Copy files from $DATADIR/mods into $WURMROOT/mods
 ## Link server folder from $DATADIR/servers/$SERVERNAME into $WURMROOT/$SERVERNAME
 ## Link logging folder from $DATADIR/logs/$SERVERNAME into $WURMROOT/logging
 ##
@@ -32,9 +33,12 @@ SERVERDIR="$DATADIR/servers/$SERVERNAME"
 LOGGINGDIR="$DATADIR/logs/$SERVERNAME"
 
 # Overlay config files
-find /data/config -maxdepth 1 -type f | while read configfile; do
+find /data/config -mindepth 1 -maxdepth 1 -type f | while read configfile; do
   ln -sfv $configfile $WURMROOT/
 done
+
+# Overlay mod files
+test -d $DATADIR/mods && cp -rv $DATADIR/mods $WURMROOT/
 
 # Set wurm.ini option
 function setoption() {
@@ -47,13 +51,13 @@ function setoption() {
 # Link server directory
 if test -d "$SERVERDIR"; then
   ln -sfv "$SERVERDIR" $WURMROOT/
-  ln -sfv "$SERVERDIR" $WURMROOT/currentserver
+  ln -sfvn "$SERVERDIR" $WURMROOT/currentserver
 
   # Enable RMI
   setoption USE_INCOMING_RMI true
 
   mkdir -p "$LOGGINGDIR"
-  ln -sfv "$LOGGINGDIR" $WURMROOT/logging
+  ln -sfvn "$LOGGINGDIR" $WURMROOT/logging
 else
   die "Server directory '$SERVERDIR' is missing"
 fi
