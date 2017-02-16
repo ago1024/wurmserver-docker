@@ -5,8 +5,8 @@ all: steamcmd server creative adventure
 steamcmd:
 	docker build -t ago1024/steamcmd steamcmd
 server: steamcmd
-	docker build -t ago1024/wurmunlimited:public server
+	docker build -t ago1024/wurmunlimited:alpha server
 creative: server
-	docker build -t ago1024/wurmunlimited-creative:public creative
+	docker build -t ago1024/wurmunlimited-creative:alpha creative
 adventure: server
-	docker build -t ago1024/wurmunlimited-adventure:public adventure 
+	docker build -t ago1024/wurmunlimited-adventure:alpha adventure 

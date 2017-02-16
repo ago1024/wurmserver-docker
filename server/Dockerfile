@@ -1,9 +1,9 @@
 FROM ago1024/steamcmd
 
 ENV WURMROOT=/wurmunlimited DATADIR=/data SERVERSDIR=/servers
-ARG betabranch=
+ARG betabranch=alpha
 ARG betapassword=
-ARG MODLOADER_VERSION=0.21.1
+ARG MODLOADER_VERSION=0.21.1-alpha5
 ARG CLUSTERCONFIG_VERSION=1.4
 ARG RMITOOL_VERSION=1.0
 
@@ -64,6 +64,12 @@ COPY launcher.sh $WURMROOT/
 # Initialize data volume
 #
 COPY LaunchConfig.ini logging.properties $DATADIR/config/
+
+# Server fixes mod
+RUN \
+  curl -L -O https://github.com/ago1024/WurmServerModLauncher/releases/download/v${MODLOADER_VERSION}/serverfixes-${MODLOADER_VERSION}.zip && \
+  unzip $WURMROOT/serverfixes-${MODLOADER_VERSION} && \
+  rm $WURMROOT/serverfixes-${MODLOADER_VERSION}.zip
 
 ENV PATH=$PATH:$WURMROOT:$WURMROOT/runtime/jre1.8.0_60/bin
 
