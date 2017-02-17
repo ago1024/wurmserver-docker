@@ -2,7 +2,7 @@ FROM ago1024/wurmbase
 
 ENV WURMROOT=/wurmunlimited DATADIR=/data SERVERSDIR=/servers
 ARG betabranch=alpha
-ARG betapassword=
+ARG betapassword=AlphaWL2txMU50CI
 ARG MODLOADER_VERSION=0.22-alpha6
 ARG CLUSTERCONFIG_VERSION=1.4
 ARG RMITOOL_VERSION=1.0
@@ -30,7 +30,8 @@ RUN \
   mv $WURMROOT/linux64/steamclient.so $WURMROOT/nativelibs && \
   rm $WURMROOT/steamclient.so && \
   mkdir -p $SERVERSDIR && \
-  rm -rf $WURMROOT/*_backup && \
+  rm -rf $WURMROOT/dist/Adventure && mkdir $WURMROOT/dist/Adventure && \
+  rm -rf $WURMROOT/dist/Creative && mkdir $WURMROOT/dist/Creative && \
   rm -rf $WURMROOT/runtime && \
   ln -sf /opt/runtime $WURMROOT
 
