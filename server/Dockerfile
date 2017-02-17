@@ -27,7 +27,8 @@ RUN \
     +force_install_dir $WURMROOT \
     +app_update 402370 ${betabranch:+-beta} ${betabranch} ${betapassword:+-betapassword} ${betapassword} validate \
     +exit && \
-  cp $WURMROOT/linux64/steamclient.so $WURMROOT/nativelibs && \
+  mv $WURMROOT/linux64/steamclient.so $WURMROOT/nativelibs && \
+  rm $WURMROOT/steamclient.so && \
   mkdir -p $SERVERSDIR && \
   rm -rf $WURMROOT/*_backup && \
   rm -rf $WURMROOT/runtime && \
