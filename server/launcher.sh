@@ -92,14 +92,9 @@ function term_handler() {
   fi
   exit 143
 }
-trap 'kill ${!}; term_handler' SIGTERM SIGINT
+trap 'term_handler' SIGTERM SIGINT
 
-# Start server
 cd $WURMROOT
 $WURMROOT/WurmServerLauncher "Start=$SERVERNAME" "$@" &
 pid="${!}"
-
-while true
-do
-  tail -f /dev/null & wait ${!}
-done
+wait

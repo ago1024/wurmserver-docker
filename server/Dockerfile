@@ -1,9 +1,9 @@
-FROM ago1024/steamcmd
+FROM ago1024/wurmbase
 
 ENV WURMROOT=/wurmunlimited DATADIR=/data SERVERSDIR=/servers
 ARG betabranch=alpha
 ARG betapassword=
-ARG MODLOADER_VERSION=0.21.1-alpha5
+ARG MODLOADER_VERSION=0.22-alpha6
 ARG CLUSTERCONFIG_VERSION=1.4
 ARG RMITOOL_VERSION=1.0
 
@@ -19,7 +19,7 @@ RUN \
   rm -rf /var/lib/apt/lists/*
 
 #
-# Download and setup steamcmd, Download WU Server
+# Download WU Server
 #
 RUN \
   /opt/steamcmd/steamcmd.sh \
@@ -29,7 +29,9 @@ RUN \
     +exit && \
   cp $WURMROOT/linux64/steamclient.so $WURMROOT/nativelibs && \
   mkdir -p $SERVERSDIR && \
-  rm -rf $WURMROOT/*_backup
+  rm -rf $WURMROOT/*_backup && \
+  rm -rf $WURMROOT/runtime && \
+  ln -sf /opt/runtime $WURMROOT
 
 #
 # Setup modloader

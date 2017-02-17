@@ -1,10 +1,10 @@
-.PHONY: steamcmd server crative adventure
+.PHONY: wurmbase server crative adventure
 
-all: steamcmd server creative adventure
+all: wurmbase server creative adventure
 
-steamcmd:
-	docker build -t ago1024/steamcmd steamcmd
-server: steamcmd
+wurmbase:
+	docker build -t ago1024/wurmbase wurmbase
+server: wurmbase
 	docker build -t ago1024/wurmunlimited:alpha server
 creative: server
 	docker build -t ago1024/wurmunlimited-creative:alpha creative
