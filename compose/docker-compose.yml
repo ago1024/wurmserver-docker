@@ -1,25 +1,29 @@
 version: '2'
 services:
   login:
-    image: wurmunlimited
+    image: ago1024/wurmunlimited:public
     ports:
       - "3724:3724"
     volumes:
-      - wurmunlimited:/data
+      - wu_data:/data
+      - wu_servers:/servers
     command: Login
   creative:
-    image: wurmunlimited
+    image: ago1024/wurmunlimited:public
     ports:
       - "3725:3724"
     volumes:
-      - wurmunlimited:/data
+      - wu_data:/data
+      - wu_servers:/servers
     command: Creative
   adventure:
-    image: wurmunlimited
+    image: ago1024/wurmunlimited:public
     ports:
       - "3726:3724"
     volumes:
-      - wurmunlimited:/data
+      - wu_data:/data
+      - wu_servers:/servers
     command: Adventure
 volumes:
-  wurmunlimited:      
+  wu_data:
+  wu_servers:
