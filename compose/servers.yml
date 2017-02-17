@@ -1,7 +1,7 @@
 servers:
   Login:
     type: login
-    id: 1
+    id: 0
     public:
       ip: 192.168.26.245
       port: 3724
