@@ -3,9 +3,6 @@ FROM ago1024/wurmbase
 ENV WURMROOT=/wurmunlimited DATADIR=/data SERVERSDIR=/servers
 ARG betabranch=
 ARG betapassword=
-ARG MODLOADER_VERSION=0.22
-ARG CLUSTERCONFIG_VERSION=1.4
-ARG RMITOOL_VERSION=1.0
 
 #
 # Load packages
@@ -37,6 +34,7 @@ RUN \
 #
 # Setup modloader
 #
+ARG MODLOADER_VERSION=0.23
 WORKDIR $WURMROOT
 RUN \
   curl -L -O https://github.com/ago1024/WurmServerModLauncher/releases/download/v${MODLOADER_VERSION}/server-modlauncher-${MODLOADER_VERSION}.zip && \
@@ -49,12 +47,14 @@ RUN \
 #
 # Setup RMI Tool
 #
+ARG RMITOOL_VERSION=1.0
 RUN curl -L -O https://github.com/bdew-wurm/rmitool/releases/download/v${RMITOOL_VERSION}/rmitool.jar
 COPY rmitool $WURMROOT/rmitool
 
 #
 # Setup clusterconfig
 #
+ARG CLUSTERCONFIG_VERSION=1.4
 RUN curl -L -O https://github.com/ago1024/clusterconfig/releases/download/v${CLUSTERCONFIG_VERSION}/clusterconfig.jar
 
 #
