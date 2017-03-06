@@ -1,4 +1,4 @@
-FROM ago1024/wurmunlimited:beta
+FROM ago1024/wurmunlimited:public
 
 ENV SERVERNAME=Creative
 
