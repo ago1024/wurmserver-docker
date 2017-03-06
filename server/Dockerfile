@@ -1,7 +1,7 @@
 FROM ago1024/wurmbase
 
 ENV WURMROOT=/wurmunlimited DATADIR=/data SERVERSDIR=/servers
-ARG betabranch=
+ARG betabranch=beta
 ARG betapassword=
 
 #
@@ -27,14 +27,15 @@ RUN \
   mv $WURMROOT/linux64/steamclient.so $WURMROOT/nativelibs && \
   rm $WURMROOT/steamclient.so && \
   mkdir -p $SERVERSDIR && \
-  rm -rf $WURMROOT/*_backup && \
+  rm -rf $WURMROOT/dist/Adventure && mkdir $WURMROOT/dist/Adventure && \
+  rm -rf $WURMROOT/dist/Creative && mkdir $WURMROOT/dist/Creative && \
   rm -rf $WURMROOT/runtime && \
   ln -sf /opt/runtime $WURMROOT
 
 #
 # Setup modloader
 #
-ARG MODLOADER_VERSION=0.23
+ARG MODLOADER_VERSION=0.24
 WORKDIR $WURMROOT
 RUN \
   curl -L -O https://github.com/ago1024/WurmServerModLauncher/releases/download/v${MODLOADER_VERSION}/server-modlauncher-${MODLOADER_VERSION}.zip && \
@@ -67,6 +68,12 @@ COPY launcher.sh $WURMROOT/
 # Initialize data volume
 #
 COPY LaunchConfig.ini logging.properties $DATADIR/config/
+
+# Server fixes mod
+RUN \
+  curl -L -O https://github.com/ago1024/WurmServerModLauncher/releases/download/v${MODLOADER_VERSION}/serverfixes-${MODLOADER_VERSION}.zip && \
+  unzip $WURMROOT/serverfixes-${MODLOADER_VERSION} && \
+  rm $WURMROOT/serverfixes-${MODLOADER_VERSION}.zip
 
 ENV PATH=$PATH:$WURMROOT:$WURMROOT/runtime/jre1.8.0_60/bin
 

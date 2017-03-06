@@ -5,8 +5,8 @@ all: wurmbase server creative adventure
 wurmbase:
 	docker build -t ago1024/wurmbase wurmbase
 server: wurmbase
-	docker build -t ago1024/wurmunlimited:public server
+	docker build -t ago1024/wurmunlimited:beta server
 creative: server
-	docker build -t ago1024/wurmunlimited-creative:public creative
+	docker build -t ago1024/wurmunlimited-creative:beta creative
 adventure: server
-	docker build -t ago1024/wurmunlimited-adventure:public adventure 
+	docker build -t ago1024/wurmunlimited-adventure:beta adventure 
