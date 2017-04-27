@@ -35,7 +35,7 @@ RUN \
 #
 # Setup modloader
 #
-ARG MODLOADER_VERSION=0.25-beta3
+ARG MODLOADER_VERSION=0.25-beta4
 WORKDIR $WURMROOT
 RUN \
   curl -L -O https://github.com/ago1024/WurmServerModLauncher/releases/download/v${MODLOADER_VERSION}/server-modlauncher-${MODLOADER_VERSION}.zip && \
@@ -69,7 +69,7 @@ COPY launcher.sh $WURMROOT/
 #
 COPY LaunchConfig.ini logging.properties $DATADIR/config/
 
-ENV PATH=$PATH:$WURMROOT:$WURMROOT/runtime/jre1.8.0_60/bin
+ENV PATH=$PATH:$WURMROOT:$WURMROOT/runtime/jre1.8.0_121/bin
 
 HEALTHCHECK --interval=5m --timeout=10s \
   CMD $WURMROOT/rmitool isrunning || exit 1
