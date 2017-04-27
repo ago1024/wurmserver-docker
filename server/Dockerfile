@@ -1,7 +1,7 @@
 FROM ago1024/wurmbase
 
 ENV WURMROOT=/wurmunlimited DATADIR=/data SERVERSDIR=/servers
-ARG betabranch=
+ARG betabranch=beta
 ARG betapassword=
 
 #
@@ -35,7 +35,7 @@ RUN \
 #
 # Setup modloader
 #
-ARG MODLOADER_VERSION=0.24
+ARG MODLOADER_VERSION=0.25-beta3
 WORKDIR $WURMROOT
 RUN \
   curl -L -O https://github.com/ago1024/WurmServerModLauncher/releases/download/v${MODLOADER_VERSION}/server-modlauncher-${MODLOADER_VERSION}.zip && \
