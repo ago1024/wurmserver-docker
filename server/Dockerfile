@@ -23,7 +23,7 @@ RUN \
     +login anonymous \
     +force_install_dir $WURMROOT \
     +app_update 402370 ${betabranch:+-beta} ${betabranch} ${betapassword:+-betapassword} ${betapassword} validate \
-    +exit && \
+    +exit &&  \
   mv $WURMROOT/linux64/steamclient.so $WURMROOT/nativelibs && \
   rm $WURMROOT/steamclient.so && \
   mkdir -p $SERVERSDIR && \
@@ -35,7 +35,7 @@ RUN \
 #
 # Setup modloader
 #
-ARG MODLOADER_VERSION=0.25-beta4
+ARG MODLOADER_VERSION=0.25-beta5
 WORKDIR $WURMROOT
 RUN \
   curl -L -O https://github.com/ago1024/WurmServerModLauncher/releases/download/v${MODLOADER_VERSION}/server-modlauncher-${MODLOADER_VERSION}.zip && \
