@@ -18,6 +18,7 @@ RUN \
 #
 # Download WU Server
 #
+ARG WURMVER=2182584
 RUN \
   /opt/steamcmd/steamcmd.sh \
     +login anonymous \
@@ -35,13 +36,12 @@ RUN \
 #
 # Setup modloader
 #
-ARG MODLOADER_VERSION=0.25
+ARG MODLOADER_VERSION=0.29
 WORKDIR $WURMROOT
 RUN \
   curl -L -O https://github.com/ago1024/WurmServerModLauncher/releases/download/v${MODLOADER_VERSION}/server-modlauncher-${MODLOADER_VERSION}.zip && \
   unzip $WURMROOT/server-modlauncher-${MODLOADER_VERSION} && \
   rm $WURMROOT/server-modlauncher-${MODLOADER_VERSION}.zip && \
-  rm -rf $WURMROOT/mods/* && \
   /bin/bash $WURMROOT/patcher.sh && \
   mv -v $WURMROOT/WurmServerLauncher-patched $WURMROOT/WurmServerLauncher
 
