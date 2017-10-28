@@ -18,7 +18,7 @@ RUN \
 #
 # Download WU Server
 #
-ARG WURMVER=2182584
+ARG WURMVER=2194460
 RUN \
   /opt/steamcmd/steamcmd.sh \
     +login anonymous \
@@ -36,7 +36,7 @@ RUN \
 #
 # Setup modloader
 #
-ARG MODLOADER_VERSION=0.29
+ARG MODLOADER_VERSION=0.30.1
 WORKDIR $WURMROOT
 RUN \
   curl -L -O https://github.com/ago1024/WurmServerModLauncher/releases/download/v${MODLOADER_VERSION}/server-modlauncher-${MODLOADER_VERSION}.zip && \
@@ -71,8 +71,11 @@ COPY LaunchConfig.ini logging.properties $DATADIR/config/
 
 ENV PATH=$PATH:$WURMROOT:$WURMROOT/runtime/jre1.8.0_121/bin
 
+ENV HTTPSERVER_PORT 8787
+ENV HTTPSERVER_HOSTNAME ""
+
 HEALTHCHECK --interval=5m --timeout=10s \
   CMD $WURMROOT/rmitool isrunning || exit 1
-EXPOSE 3724 48010 7221 7220 27016
+EXPOSE 3724 48010 7221 7220 8787 27016
 STOPSIGNAL SIGTERM
 ENTRYPOINT ["./launcher.sh"]

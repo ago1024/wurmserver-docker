@@ -66,6 +66,14 @@ else
   die "Server directory '$SERVERDIR' is missing"
 fi
 
+if test ! -f "$WURMROOT/mods/httpserver.config" -a -n "$HTTPSERVER_HOSTNAME"; then
+  cat >"$WURMROOT/mods/httpserver.config" <<EOF
+serverPort=8787
+publicServerAddress=$HTTPSERVER_HOSTNAME
+publicServerPort=$HTTPSERVER_PORT
+EOF
+fi
+
 # Setup server for cluster
 if test -f servers.yml; then
   java -jar clusterconfig.jar servers.yml --verify $SERVERNAME || die "servers.yml is not valid"
