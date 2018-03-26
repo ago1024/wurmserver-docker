@@ -36,7 +36,7 @@ RUN \
 #
 # Setup modloader
 #
-ARG MODLOADER_VERSION=0.30.1
+ARG MODLOADER_VERSION=0.33
 WORKDIR $WURMROOT
 RUN \
   curl -L -O https://github.com/ago1024/WurmServerModLauncher/releases/download/v${MODLOADER_VERSION}/server-modlauncher-${MODLOADER_VERSION}.zip && \
