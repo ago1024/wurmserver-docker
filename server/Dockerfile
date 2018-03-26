@@ -1,7 +1,7 @@
 FROM ago1024/wurmbase
 
 ENV WURMROOT=/wurmunlimited DATADIR=/data SERVERSDIR=/servers
-ARG betabranch=
+ARG betabranch=beta
 ARG betapassword=
 
 #
@@ -18,7 +18,7 @@ RUN \
 #
 # Download WU Server
 #
-ARG WURMVER=2194460
+ARG WURMVER=2613165
 RUN \
   /opt/steamcmd/steamcmd.sh \
     +login anonymous \
@@ -36,7 +36,7 @@ RUN \
 #
 # Setup modloader
 #
-ARG MODLOADER_VERSION=0.33
+ARG MODLOADER_VERSION=0.33-beta1
 WORKDIR $WURMROOT
 RUN \
   curl -L -O https://github.com/ago1024/WurmServerModLauncher/releases/download/v${MODLOADER_VERSION}/server-modlauncher-${MODLOADER_VERSION}.zip && \

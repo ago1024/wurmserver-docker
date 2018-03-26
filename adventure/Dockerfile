@@ -1,4 +1,4 @@
-FROM ago1024/wurmunlimited:public
+FROM ago1024/wurmunlimited:beta
 
 ENV SERVERNAME=Adventure
 
