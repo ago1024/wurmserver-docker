@@ -59,6 +59,9 @@ if test -d "$SERVERDIR"; then
 
   # Enable RMI
   setoption USE_INCOMING_RMI true
+  # Disable auto networking
+  setoption AUTO_NETWORKING false
+  setoption ENABLE_PNP_PORT_FORWARD false
 
   mkdir -p "$LOGGINGDIR"
   ln -sfvn "$LOGGINGDIR" $WURMROOT/logging
