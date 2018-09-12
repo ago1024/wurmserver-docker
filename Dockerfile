@@ -41,7 +41,7 @@ RUN apt-get install -y lib32gcc1
 # Versions
 ARG betabranch=beta
 ARG betapassword=
-ARG WURMVER=3093717
+ARG WURMVER=3105775
 
 # Download wurmunlimited
 RUN /opt/steamcmd/steamcmd.sh \
