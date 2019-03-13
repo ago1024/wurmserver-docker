@@ -10,4 +10,5 @@ test -n "$IMAGE" || die "Missing parameter image"
 
 set -e
 BUILDID=$(docker run --rm --entrypoint cat $IMAGE /wurmunlimited/steamapps/appmanifest_402370.acf | sed -n 's/^.*"buildid".*"\(.*\)".*$/\1/p')
-docker tag $IMAGE $(echo $IMAGE | cut -f1 -d:):$BUILDID
+MODLOADER_VERSION=$(docker run --rm --entrypoint bash $IMAGE -c 'echo $MODLOADER_VERSION')
+docker tag $IMAGE $(echo $IMAGE | cut -f1 -d:):$BUILDID-$MODLOADER_VERSION
