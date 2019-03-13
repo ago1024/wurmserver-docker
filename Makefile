@@ -1,6 +1,6 @@
 .PHONY: wurmbase server crative adventure push
 
-TAG=public
+TAG=beta
 
 all: server creative adventure
 
