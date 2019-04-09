@@ -39,9 +39,9 @@ RUN apt-get -y update
 RUN apt-get install -y lib32gcc1
 
 # Versions
-ARG betabranch=beta
+ARG betabranch=
 ARG betapassword=
-ARG WURMVER=3594130
+ARG WURMVER=3720466
 
 # Download wurmunlimited
 RUN /opt/steamcmd/steamcmd.sh \
@@ -83,7 +83,7 @@ FROM runtime AS server
 COPY --from=build $WURMROOT $WURMROOT
 
 # Setup modloader
-ARG MODLOADER_VERSION=0.43-beta1
+ARG MODLOADER_VERSION=0.43
 ENV MODLOADER_VERSION=${MODLOADER_VERSION}
 WORKDIR $WURMROOT
 RUN \
