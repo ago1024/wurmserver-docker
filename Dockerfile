@@ -1,7 +1,7 @@
 #
 # Base system
 #
-FROM openjdk:8-jre-stretch AS base
+FROM eclipse-temurin:8-jre AS base
 ENV WURMROOT=/wurmunlimited DATADIR=/data SERVERSDIR=/servers
 WORKDIR $WURMROOT
 
@@ -12,7 +12,6 @@ RUN \
     sqlite3 \
     unzip \
     curl \
-    openjfx \
     && \
   rm -rf /var/lib/apt/lists/*
 
@@ -22,7 +21,7 @@ RUN \
 FROM base AS steamcmd
 
 RUN apt-get -y update
-RUN apt-get install -y lib32gcc1
+RUN apt-get install -y lib32gcc-s1
 
 WORKDIR /opt/steamcmd
 ADD https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz /opt/steamcmd
@@ -36,7 +35,7 @@ FROM steamcmd AS build
 WORKDIR $WURMROOT
 
 RUN apt-get -y update
-RUN apt-get install -y lib32gcc1
+RUN apt-get install -y lib32gcc-s1
 
 # Versions
 ARG betabranch=
@@ -45,8 +44,8 @@ ARG WURMVER=3720466
 
 # Download wurmunlimited
 RUN /opt/steamcmd/steamcmd.sh \
-    +login anonymous \
     +force_install_dir $WURMROOT \
+    +login anonymous \
     +app_update 402370 ${betabranch:+-beta} ${betabranch} ${betapassword:+-betapassword} ${betapassword} validate \
     +exit
 # stream shared libs
@@ -70,9 +69,11 @@ RUN mv $WURMROOT/runtime /runtime
 # Runtime
 #
 FROM base AS runtime
-# not needed. We have openjdk + openjfx in the base image
-#COPY --from=build /runtime /runtime
-#RUN ln -sf /runtime $WURMROOT/runtime
+# Link openjdk to the location where java was in old images
+RUN mkdir -p /usr/lib/jvm/java-8-openjdk-amd64
+RUN ln -sf /opt/java/openjdk /usr/lib/jvm/java-8-openjdk-amd64/jre
+# Copy OpenJFX from the runtime
+COPY --from=build /runtime/jre1.8.0_172/lib/ext/jfxrt.jar /opt/java/openjdk/lib/ext
 
 #
 # Server
@@ -83,7 +84,7 @@ FROM runtime AS server
 COPY --from=build $WURMROOT $WURMROOT
 
 # Setup modloader
-ARG MODLOADER_VERSION=0.45
+ARG MODLOADER_VERSION=0.47
 ENV MODLOADER_VERSION=${MODLOADER_VERSION}
 WORKDIR $WURMROOT
 RUN \
